@@ -12,9 +12,9 @@ self-implement of disease centered Medical graph from zero to full and sever as 
 
 # 项目最终效果
 话不多少，直接上图。以下两图是实际问答运行过程中的截图：
-![image](https://github.com/liuhuanyong/QABasedOnMedicalKnowledgeGraph/blob/master/img/chat1.png)
+![image](img/chat1.png)
 
-![image](https://github.com/liuhuanyong/QABasedOnMedicalKnowledgeGraph/blob/master/img/chat2.png)
+![image](img/chat2.png)
 
 # 项目运行方式
 1、配置要求：要求配置neo4j数据库及相应的python依赖包。neo4j数据库用户名密码记住，并修改相应文件。  
@@ -24,7 +24,7 @@ self-implement of disease centered Medical graph from zero to full and sever as 
 # 以下介绍详细方案
 # 一、医疗知识图谱构建
 # 1.1 业务驱动的知识图谱构建框架
-![image](https://github.com/liuhuanyong/QABasedOnMedicalKnowledgeGraph/blob/master/img/kg_route.png)
+![image](img/kg_route.png)
 
 # 1.2 脚本目录
 prepare_data/datasoider.py：网络资讯采集脚本  
@@ -34,7 +34,7 @@ build_medicalgraph.py：知识图谱入库脚本    　　
 
 # 1.3 医药领域知识图谱规模
 1.3.1 neo4j图数据库存储规模
-![image](https://github.com/liuhuanyong/QABasedOnMedicalKnowledgeGraph/blob/master/img/graph_summary.png)
+![image](img/graph_summary.png)
 
 1.3.2 知识图谱实体类型
 
@@ -82,7 +82,7 @@ build_medicalgraph.py：知识图谱入库脚本    　　
 
 # 二、基于医疗知识图谱的自动问答
 # 2.1 技术架构
-![image](https://github.com/liuhuanyong/QABasedOnMedicalKnowledgeGraph/blob/master/img/qa_route.png)
+![image](img/qa_route.png)
 
 # 2.2 脚本结构
 question_classifier.py：问句类型分类脚本  
@@ -206,5 +206,17 @@ If any question about the project or me ,see https://liuhuanyong.github.io/
 2、我的csdn博客：https://blog.csdn.net/lhy2014  
 3、about me:刘焕勇，中国科学院软件研究所，lhy_in_blcu@126.com.       
 4、我的技术公众号:老刘说NLP,扫码一键关注：  
-![image](https://github.com/liuhuanyong/QABasedOnMedicalKnowledgeGraph/blob/master/img/wechat.jpg)
 
+
+# 开始步骤
+
+1. 安装依赖
+```
+pip install py2neo -i https://mirrors.aliyun.com/pypi/simple/
+pip install pyahocorasick -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
+```
+2. 知识图谱数据导入：python build_medicalgraph.py，导入的数据较多，估计需要几个小时。
+`python build_medicalgraph.py`
+3. 启动问答模式
+`python chatbot_graph.py`
