@@ -130,7 +130,16 @@ class QuestionPaser:
 
         # 查询症状会导致哪些疾病
         elif question_type == 'symptom_disease':
+            # 仅支持单条语句查询
             sql = ["MATCH (m:Disease)-[r:has_symptom]->(n:Symptom) where n.name = '{0}' return m.name, r.name, n.name".format(i) for i in entities]
+            # 新的语句，支持多个症状查询
+            sql = ["MATCH (m:Disease)-[r:has_symptom]->(n:Symptom) where" 
+            + "or".join(" n.name = '{0}' ".format(i) for i in entities) 
+            + " WITH m,COLLECT(DISTINCT n) AS ns WHERE SIZE(ns) = "
+            + str(len(entities))  
+            + " WITH m MATCH (m:Disease)-[r:has_symptom]->(n:Symptom) where "
+            + "and".join(" n.name <> '{0}' ".format(i) for i in entities) 
+            + " return m.name,n.name"]
 
         # 查询疾病的并发症
         elif question_type == 'disease_acompany':
