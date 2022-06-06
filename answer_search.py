@@ -23,7 +23,7 @@ class AnswerSearcher:
                 answers += ress
             final_answer = self.answer_prettify(question_type, answers)
             if final_answer:
-                final_answers.append(final_answer)
+                final_answers = final_answer
         return final_answers
 
     '''根据对应的qustion_type，调用相应的回复模板'''
@@ -42,11 +42,11 @@ class AnswerSearcher:
             print(desc)
             print(len(desc))
             if len(desc) == 1:
-                final_answer = '您可能染上的疾病是：{0}'.format(desc[0])
+                final_answer = {'last': desc[0],'data': '您可能染上的疾病是：{0}'.format(desc[0]) } 
             elif len(desc) == 0:
-                final_answer = '暂未查询到您患有的疾病'
+                final_answer = {'last': '','data': '暂未查询到您患有的疾病' }
             else:
-                final_answer = '您是否还有以下其它症状：{}'.format('；'.join(symptomDesc[:self.num_limit]))
+                final_answer = {'last': None,'data': '您是否还有以下其它症状：{}'.format('；'.join(symptomDesc[:self.num_limit]))}
 
         elif question_type == 'disease_cause':
             desc = [i['m.cause'] for i in answers]

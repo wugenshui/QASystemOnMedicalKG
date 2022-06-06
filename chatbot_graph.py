@@ -33,7 +33,17 @@ class ChatBotGraph:
         if not final_answers:
             return answer
         else:
-            return '\n'.join(final_answers)
+            if not final_answers['data']:
+                # 旧版问答
+                return '\n'.join(final_answers)
+            else:
+                # 新版问答
+                if final_answers['last'] != None:
+                    self.lastquestion = final_answers['last']
+                    print('set self.lastquestion:' + self.lastquestion)
+                return final_answers['data']
+            
+            
 
 if __name__ == '__main__':
     handler = ChatBotGraph()
@@ -41,6 +51,6 @@ if __name__ == '__main__':
         question = input('用户:')
         # 记录上一次的问题
         handler.lastquestion += question + ' '
-        answer = handler.chat_main(handler.lastquest)
+        answer = handler.chat_main(handler.lastquestion)
         print('小勇:', answer)
 
