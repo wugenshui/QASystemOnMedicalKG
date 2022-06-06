@@ -18,6 +18,8 @@ class ChatBotGraph:
         self.symptom = []
         # 疾病缓存
         self.disease = ''
+        # 上一次的问题，未回答完成会进行累加
+        self.lastquestion = ''
 
     def chat_main(self, sent):
         answer = '您好，我是小勇医药智能助理，希望可以帮到您。如果没答上来，可联系https://liuhuanyong.github.io/。祝您身体棒棒！'
@@ -37,6 +39,8 @@ if __name__ == '__main__':
     handler = ChatBotGraph()
     while 1:
         question = input('用户:')
-        answer = handler.chat_main(question)
+        # 记录上一次的问题
+        handler.lastquestion += question + ' '
+        answer = handler.chat_main(handler.lastquest)
         print('小勇:', answer)
 
