@@ -35,6 +35,7 @@ class QuestionClassifier:
         self.wdtype_dict = self.build_wdtype_dict()
         # 问句疑问词
         self.symptom_qwds = ['症状', '表征', '现象', '症候', '表现']
+        self.symptom_disease_qwds = ["怎么了"]
         self.cause_qwds = ['原因','成因', '为什么', '怎么会', '怎样才', '咋样才', '怎样会', '如何会', '为啥', '为何', '如何才会', '怎么才会', '会导致', '会造成']
         self.acompany_qwds = ['并发症', '并发', '一起发生', '一并发生', '一起出现', '一并出现', '一同发生', '一同出现', '伴随发生', '伴随', '共现']
         self.food_qwds = ['饮食', '饮用', '吃', '食', '伙食', '膳食', '喝', '菜' ,'忌口', '补品', '保健品', '食谱', '菜谱', '食用', '食物','补品']
@@ -72,19 +73,20 @@ class QuestionClassifier:
 
         question_types = []
 
-        # 症状
-        if self.check_words(self.symptom_qwds, question) and ('disease' in types):
-            question_type = 'disease_symptom'
-            question_types.append(question_type)
-
-        if self.check_words(self.symptom_qwds, question) and ('symptom' in types):
-            question_type = 'symptom_disease'
-            question_types.append(question_type)
-
         # 原因
         if self.check_words(self.cause_qwds, question) and ('disease' in types):
             question_type = 'disease_cause'
             question_types.append(question_type)
+            
+        # 症状
+        if self.check_words(self.symptom_disease_qwds, question) and ('symptom' in types):
+            question_type = 'symptom_disease'
+            question_types.append(question_type)
+        if self.check_words(self.symptom_qwds, question) and ('disease' in types):
+            question_type = 'disease_symptom'
+            question_types.append(question_type)
+
+
         # 并发症
         if self.check_words(self.acompany_qwds, question) and ('disease' in types):
             question_type = 'disease_acompany'
