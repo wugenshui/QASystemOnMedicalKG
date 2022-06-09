@@ -37,8 +37,8 @@ class AnswerSearcher:
             final_answer = {'last': None,'data':  '{0}的症状包括：{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))}
 
         elif question_type == 'symptom_disease':
-            desc = list(set([i['m.name'] for i in answers]))
-            symptomDesc = list(set([i['n.name'] for i in answers]))
+            desc = list(set([i['d.name'] for i in answers]))
+            symptomDesc = list(set([i['sname'] for i in answers]))
             if len(desc) == 1:
                 final_answer = {'last': desc[0],'data': '您可能染上的疾病是：{0}'.format(desc[0]) } 
             elif len(desc) == 0:

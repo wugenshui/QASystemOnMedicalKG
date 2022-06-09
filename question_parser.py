@@ -138,8 +138,21 @@ class QuestionPaser:
             + " WITH m,COLLECT(DISTINCT n) AS ns WHERE SIZE(ns) = "
             + str(len(entities))  
             + " WITH m MATCH (m:Disease)-[r:has_symptom]->(n:Symptom) where "
-            + "and".join(" n.name <> '{0}' ".format(i) for i in entities) 
+            + "AND".join(" n.name <> '{0}' ".format(i) for i in entities) 
             + " return m.name,n.name"]
+            # 新的语句，支持多个症状兼容父子查询
+            tmp = " WITH d ".join("MATCH (s{0}:Symptom)<-[:has_symptom]-(:Disease)-[:subclass*0..1]->(d:Disease)-[r:has_symptom]->(s{1}:Symptom) WHERE s{0}.name='{2}' OR s{1}.name='{2}'".format(idx*2,idx*2+1,i) for idx, i in enumerate(entities))
+            sql = [tmp
+            + "WITH d "
+            + "MATCH (d:Disease)-[r:has_symptom]->(ss1:Symptom)"
+            + " WHERE" + "AND".join(" ss1.name <> '{0}' ".format(i) for i in entities)
+            + "RETURN d.name,ss1.name as sname"
+            + " UNION "
+            + tmp
+            + "WITH d "
+            + "MATCH (ss2:Symptom)<-[:has_symptom]-(:Disease)-[:subclass]->(d:Disease)"
+            + " WHERE " + "AND".join(" ss2.name <> '{0}' ".format(i) for i in entities)
+            + "return d.name,ss2.name as sname"]
 
         # 查询疾病的并发症
         elif question_type == 'disease_acompany':
