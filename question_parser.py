@@ -126,7 +126,16 @@ class QuestionPaser:
 
         # 查询疾病有哪些症状
         elif question_type == 'disease_symptom':
-            sql = ["MATCH (m:Disease)-[r:has_symptom]->(n:Symptom) where m.name = '{0}' return m.name, r.name, n.name".format(i) for i in entities]
+            # 旧版仅能查询自己的症状
+            sql = ["MATCH (m:Disease)-[r:has_symptom]->(n:Symptom) where m.name = '{0}' return m.name, n.name".format(i) for i in entities]
+            # 新版可以查询父类的症状
+            sql = ["""
+            MATCH (m:Disease)-[:has_symptom]->(n:Symptom) where m.name = '{0}' 
+            return m.name as dname, n.name as sname
+            UNION
+            MATCH (n:Symptom)<-[:has_symptom]-(Disease)-[:subclass]->(m:Disease) where m.name = '{0}'
+            return m.name as dname, n.name as sname
+            """.format(i) for i in entities]
 
         # 查询症状会导致哪些疾病
         elif question_type == 'symptom_disease':

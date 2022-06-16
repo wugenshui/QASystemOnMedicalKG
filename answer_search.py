@@ -32,9 +32,9 @@ class AnswerSearcher:
         if not answers:
             return ''
         if question_type == 'disease_symptom':
-            desc = [i['n.name'] for i in answers]
-            subject = answers[0]['m.name']
-            final_answer = {'last': None,'data':  '{0}的症状包括：{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))}
+            desc = [i['sname'] for i in answers]
+            subject = answers[0]['dname']
+            final_answer = {'last': None,'data':  '{0}的症状包括：{1}'.format(subject, '；'.join(list(set(desc))))}
 
         elif question_type == 'symptom_disease':
             desc = list(set([i['d.name'] for i in answers]))
